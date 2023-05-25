@@ -14,7 +14,15 @@ const cardsStore = useCardsStore()
 const props = defineProps(['data'])
 const columnData = ref(props.data)
 
-const cardList = computed(() => cardsStore.getCardList(columnData.value.code))
+const isSorted = ref(0)
+
+const cardList = computed(() => {
+  const list = ref(cardsStore.getCardList(columnData.value.code))
+  if(isSorted.value !== 0)
+    list.value.sort((prev: any, next: any) => (prev.score - next.score) * isSorted.value)
+  return list.value
+})
+
 </script>
 
 <template>
@@ -22,12 +30,12 @@ const cardList = computed(() => cardsStore.getCardList(columnData.value.code))
     <div class="kanban--column-header flex items-center gap-2">
       <h2 class="font-semibold text-base grow">{{ columnData.name }}</h2>
       <div class="flex">
-        <button class="text-slate-500" type="button">
+        <button class="text-slate-500" type="button" @click="isSorted = 1">
           <svg class="w-4 h-4 fill-current">
             <use xlink:href="#ArrowDown"></use>
           </svg>
         </button>
-        <button class="text-slate-500" type="button">
+        <button class="text-slate-500" type="button" @click="isSorted = -1">
           <svg class="w-4 h-4 fill-current">
             <use xlink:href="#ArrowUp"></use>
           </svg>
@@ -35,7 +43,7 @@ const cardList = computed(() => cardsStore.getCardList(columnData.value.code))
       </div>
     </div>
     <div class="kanban--card-list grid gap-2 mt-3 empty:rounded">
-      <Card v-for="(card, index) in cardList" :data="card" :key="index"/>
+      <Card v-for="card in cardList" :data="card" :key="`card_${card.id}`"/>
     </div>
     <button class="w-full mt-3 px-5 py-2 text-sm text-slate-500" type="button" @click="addCard(columnData.code)">Добавить</button>
   </div>

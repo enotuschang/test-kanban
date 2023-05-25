@@ -2,17 +2,16 @@ import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 
 export const useColumnsStore = defineStore('columnsStore', () => {
-  type KanbanColumn = {
-    id: number,
-    sort: number,
-    name: string,
-    code: string
-  }
-  const setColumnList = (val: KanbanColumn) => {
+  const setColumnList = (val: any | []) => {
     columnList.value = val
   }
+  const setSelectedColumn = (val: any | null) => {
+    selectedColumn.value = val
+  }
+  const getColumnByCode = (val: string) => columnList.value.find(({code}) => code === val)
   const columnList = ref([])
+  const selectedColumn = ref(null)
   const getColumnList = computed(() => columnList.value)
 
-  return {columnList, getColumnList, setColumnList}
+  return {columnList, selectedColumn, getColumnList, getColumnByCode, setColumnList, setSelectedColumn}
 })

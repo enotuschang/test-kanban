@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import {ref, computed} from 'vue'
 import {useCardsStore} from '../stores/cardsStore'
+import {useColumnsStore} from '../stores/columnsStore'
 import Card from './Card.vue'
 
+const addCard = (code: string) => {
+  columnsStore.setSelectedColumn(code)
+}
+
+const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()
 
 const props = defineProps(['data'])
@@ -31,7 +37,7 @@ const cardList = computed(() => cardsStore.getCardList(columnData.value.code))
     <div class="kanban--card-list grid gap-2 mt-3 empty:rounded">
       <Card v-for="(card, index) in cardList" :data="card" :key="index"/>
     </div>
-    <button class="w-full mt-3 px-5 py-2 text-sm text-slate-500" type="button">Добавить</button>
+    <button class="w-full mt-3 px-5 py-2 text-sm text-slate-500" type="button" @click="addCard(columnData.code)">Добавить</button>
   </div>
 </template>
 

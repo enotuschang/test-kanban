@@ -2,18 +2,15 @@ import {ref} from 'vue'
 import {defineStore} from 'pinia'
 
 export const useCardsStore = defineStore('cardsStore', () => {
-  type KanbanCard = {
-    id: number,
-    title: string,
-    stage: string,
-    project: boolean | string,
-    score: number
-  }
-  const setCardList = (val: KanbanCard) => {
+  const setCardList = (val: any | []) => {
     cardList.value = val
   }
-  const getCardList = (stage: string) => cardList.value.filter((elem: KanbanCard) => elem.stage === stage)
+  const setSelectedCard = (val: any | null) => {
+    selectedCard.value = val
+  }
+  const getCardList = (stage: string) => cardList.value.filter((elem: any) => elem.stage === stage)
   const cardList = ref([])
+  const selectedCard = ref(null)
 
-  return {cardList, getCardList, setCardList}
+  return {cardList, selectedCard, getCardList, setCardList, setSelectedCard}
 })

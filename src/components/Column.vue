@@ -16,8 +16,16 @@ const cardList = computed(() => cardsStore.getCardList(columnData.value.code))
     <div class="kanban--column-header flex items-center gap-2">
       <h2 class="font-semibold text-base grow">{{ columnData.name }}</h2>
       <div class="flex">
-        <button class="w-4 h-4" type="button"></button>
-        <button class="w-4 h-4" type="button"></button>
+        <button class="text-slate-500" type="button">
+          <svg class="w-4 h-4 fill-current">
+            <use xlink:href="#ArrowDown"></use>
+          </svg>
+        </button>
+        <button class="text-slate-500" type="button">
+          <svg class="w-4 h-4 fill-current">
+            <use xlink:href="#ArrowUp"></use>
+          </svg>
+        </button>
       </div>
     </div>
     <div class="kanban--card-list grid gap-2 mt-3 empty:rounded">
@@ -31,24 +39,17 @@ const cardList = computed(() => cardsStore.getCardList(columnData.value.code))
 .kanban--column-header:before {
   content:'';
   flex:0 0 4px;
-  width:4px;
-  height:4px;
-  background:#7D8CA1;
   border-radius:50%;
+  @apply w-1 h-1 bg-slate-500
 }
 
 .kanban--card-list:empty {
-  align-items:center;
   min-height:120px;
-  border:#b9c2ce 1px dashed;
+  @apply items-center border border-slate-400 border-dashed
 }
 
 .kanban--card-list:empty:after {
   content:'Список пуст';
-  font-size:13px;
-  font-weight:400;
-  line-height:1.21;
-  text-align:center;
-  color:#7c8ba0;
+  @apply items-center text-sm text-center text-slate-500
 }
 </style>

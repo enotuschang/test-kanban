@@ -12,13 +12,29 @@ const projectName = computed(() => projectsStore.getProjectByCode(card.value.pro
 </script>
 
 <template>
-  <div class="card grid items-start gap-4 p-3 pr-2 bg-white text-slate-700 rounded">
-    <div class="card--content">
-      <h3 class="font-semibold text-sm">{{ card.title }}</h3>
-      <p>{{ card.score }}</p>
-      <p class="w-max px-2 py-1 bg-slate-200 text-slate-500 border border-slate-300 text-sm rounded" v-if="card.project">{{ projectName.name }}</p>
+  <div class="card grid gap-4 p-3 pr-2 bg-white text-slate-700 rounded">
+    <div class="card--content flex flex-col">
+      <div class="flex items-center">
+        <h3 class="mr-1 font-semibold text-sm">{{ card.title }}</h3>
+        <button class="ml-1 text-slate-500" type="button">
+          <svg class="w-4 h-4 fill-current">
+            <use xlink:href="#NoteEdit"></use>
+          </svg>
+        </button>
+        <button class="ml-1 text-slate-500" type="button">
+          <svg class="w-4 h-4 fill-current">
+            <use xlink:href="#Garbage"></use>
+          </svg>
+        </button>
+      </div>
+      <p class="mt-2 text-xs"><span class="text-slate-500">Балл:</span> <span class="font-semibold">{{ card.score }}</span></p>
+      <p class="w-max px-2 py-1 mt-auto bg-slate-200 text-slate-500 border border-slate-300 text-xs rounded" v-if="card.project">{{ projectName.name }}</p>
     </div>
-    <button class="w-4 h-4" type="button">::</button>
+    <button class="text-slate-300" type="button">
+      <svg class="w-4 h-4 fill-current">
+        <use xlink:href="#OverflowMenuSecond"></use>
+      </svg>
+    </button>
   </div>
 </template>
 

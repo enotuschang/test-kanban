@@ -77,12 +77,8 @@ const currentProject = computed(() => cardData?.value?.project)
 </template>
 
 <style scoped>
-.form--input {
-  outline:none !important;
-}
 
 .form--select select {
-  outline:none !important;
   appearance:none;
 }
 

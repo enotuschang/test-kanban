@@ -10,6 +10,13 @@ const hideModal = () => {
   cardsStore.setSelectedCard(null)
   columnsStore.setSelectedColumn(null)
   showModal.value = false
+  window.removeEventListener('keyup', pressEsc)
+}
+
+const pressEsc = (evt: any) => {
+  console.log('Escape')
+  if(evt.key !== 'Escape') return
+  hideModal()
 }
 
 const projectsStore = useProjectsStore()
@@ -28,6 +35,7 @@ const showModal = ref(false)
 watch(selectedColumn, (val) => {
   if(val === null) return
   showModal.value = true
+  window.addEventListener('keyup', pressEsc)
 })
 
 </script>
@@ -108,8 +116,8 @@ watch(selectedColumn, (val) => {
       <Column v-for="(column, index) in columns" :data="column" :key="index"/>
     </main>
   </div>
-  <div class="kanban--overlay flex justify-center items-center w-screen h-[100dvh] fixed" v-if="showModal">
-    <div class="kanban--modal w-[380px] max-w-full bg-white relative p-8 rounded">
+  <div class="kanban--overlay flex justify-center items-center w-screen h-[100dvh] fixed" v-if="showModal" @click="hideModal">
+    <div class="kanban--modal w-[380px] max-w-full bg-white relative p-8 rounded" @click.stop>
       <h1 class="text-xl text-slate-700 font-bold">{{ formTitle}}</h1>
       <p class="mt-1 text-xs text-slate-400" v-if="selectedCard">{{ formDescription.name }}</p>
       <Form :isModalForm="true" :columnData="selectedColumn" :cardData="selectedCard"/>
@@ -132,7 +140,6 @@ watch(selectedColumn, (val) => {
 }
 
 .kanban--select select {
-  outline:none !important;
   appearance:none;
 }
 

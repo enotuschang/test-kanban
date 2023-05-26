@@ -43,7 +43,6 @@ const submitButtonText = cardData.value ? 'Сохранить' : 'Добавит
 
 const projectList = computed(() => projectsStore.getProjectList)
 const columnList = computed(() => columnsStore.getColumnList)
-const currentProject = computed(() => cardData?.value?.project)
 </script>
 
 <template>

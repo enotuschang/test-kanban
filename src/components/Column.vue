@@ -20,14 +20,13 @@ const isSorted = ref(0)
 
 const selectedProject = computed(() => projectsStore.selectedProject)
 
-const baseCardList = computed(() => cardsStore.getCardList(columnData.value.code))
-
 const cardList = computed(() => {
-  const list = ref(baseCardList.value)
-  if(selectedProject.value)
+  const list = ref(cardsStore.getCardList(columnData.value.code))
+  if (selectedProject.value)
     list.value = list.value.filter(({project}) => project === selectedProject.value)
-  if(isSorted.value !== 0)
+  if (isSorted.value !== 0)
     list.value.sort((prev: any, next: any) => (prev.score - next.score) * isSorted.value)
+  console.log(list.value)
   return list.value
 })
 </script>
@@ -52,7 +51,9 @@ const cardList = computed(() => {
     <div class="kanban--card-list grid gap-2 mt-3 empty:rounded">
       <Card v-for="card in cardList" :data="card" :key="`card_${card.id}`"/>
     </div>
-    <button class="w-full mt-3 px-5 py-2 text-sm text-slate-500" type="button" @click="addCard(columnData.code)">Добавить</button>
+    <button class="w-full mt-3 px-5 py-2 text-sm text-slate-500" type="button" @click="addCard(columnData.code)">
+      Добавить
+    </button>
   </div>
 </template>
 

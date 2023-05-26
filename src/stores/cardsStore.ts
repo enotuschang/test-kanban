@@ -12,7 +12,6 @@ export const useCardsStore = defineStore('cardsStore', () => {
     cardList.value.delete(id)
   }
   const updateCard = (card: any) => {
-    console.log(card)
     cardList.value.set(card.id, card)
   }
 

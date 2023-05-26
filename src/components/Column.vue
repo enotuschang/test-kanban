@@ -9,6 +9,14 @@ const addCard = (code: string) => {
   columnsStore.setSelectedColumn(code)
 }
 
+const setTargetColumn = (val: string) => {
+  columnsStore.setTargetColumn(val)
+}
+
+const resetTargetColumn = () => {
+  columnsStore.setTargetColumn(null)
+}
+
 const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()
@@ -31,7 +39,8 @@ const cardList = computed(() => {
 </script>
 
 <template>
-  <div class="p-3 bg-slate-300 text-slate-700 rounded">
+  <div class="p-3 bg-slate-300 text-slate-700 rounded"
+       @mouseup="setTargetColumn(columnData.code)">
     <div class="kanban--column-header flex items-center gap-2">
       <h2 class="font-semibold text-base grow">{{ columnData.name }}</h2>
       <div class="flex">

@@ -30,7 +30,7 @@ const projectName = computed(() => projectsStore.getProjectByCode(card.value.pro
             <use xlink:href="#NoteEdit"></use>
           </svg>
         </button>
-        <button class="ml-1 text-slate-500" type="button">
+        <button class="ml-1 text-slate-500" type="button" @click="cardsStore.delCardById(card.id)">
           <svg class="w-4 h-4 fill-current">
             <use xlink:href="#Garbage"></use>
           </svg>

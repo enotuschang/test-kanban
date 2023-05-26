@@ -20,8 +20,10 @@ const isSorted = ref(0)
 
 const selectedProject = computed(() => projectsStore.selectedProject)
 
+const baseCardList = computed(() => cardsStore.getCardList(columnData.value.code))
+
 const cardList = computed(() => {
-  const list = ref(cardsStore.getCardList(columnData.value.code))
+  const list = ref(baseCardList.value)
   if(selectedProject.value)
     list.value = list.value.filter(({project}) => project === selectedProject.value)
   if(isSorted.value !== 0)

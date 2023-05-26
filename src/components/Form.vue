@@ -2,17 +2,42 @@
 import {ref, computed} from 'vue'
 import {useProjectsStore} from '../stores/projectsStore'
 import {useColumnsStore} from '../stores/columnsStore'
+import {useCardsStore} from '../stores/cardsStore'
+
+const saveCard = (evt: any) => {
+  const form = evt.currentTarget
+  if (!form) return
+  const data = new FormData(form)
+
+  Object.entries(cardModel.value).forEach(([key, val]) => {
+    if (![...data.keys()].some(item => item === key))
+      data.set(key, val)
+  })
+
+  cardsStore.updateCard(cardModel.value)
+  cardsStore.setSelectedCard(null)
+  columnsStore.setSelectedColumn(null)
+
+  // @todo Тут должен вызываться fetch с отправкой данных на API
+  // console.log(JSON.parse(JSON.stringify(Object.fromEntries(data.entries()))))
+}
 
 const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
+const cardsStore = useCardsStore()
 
 const props = defineProps(['columnData', 'cardData', 'isModalForm'])
 const columnData = ref(props.columnData)
 const cardData = ref(props.cardData)
 const isModalForm = ref(props.isModalForm)
 
-const cardName = ref(cardData?.value?.title || '')
-const cardScore = ref(cardData?.value?.score || 0)
+const cardModel = ref({
+  id: cardData?.value?.id || cardsStore.getLastId + 1,
+  title: cardData?.value?.title || '',
+  project: cardData?.value?.project || false,
+  stage: cardData?.value?.stage || columnData.value,
+  score: cardData?.value?.score || 0
+})
 
 const submitButtonText = cardData.value ? 'Сохранить' : 'Добавить'
 
@@ -22,24 +47,26 @@ const currentProject = computed(() => cardData?.value?.project)
 </script>
 
 <template>
-  <form class="grid gap-5 mt-5" action="">
+  <form class="grid gap-5 mt-5" action="" @submit.prevent="saveCard">
     <label class="text-xs text-slate-400">Заголовок *:<br>
       <input class="form--input w-full px-4 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
+             key="title"
+             name="title"
              maxlength="70"
              type="text"
              required
-             v-model="cardName">
+             v-model="cardModel.title">
     </label>
     <!-- @todo прикрутить плагин для кастомизации select -->
     <label class="form--select relative text-xs text-slate-400">Проект:<br>
-      <select class="w-full pl-4 pr-8 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded" name="project"
-              id="project">
-        <option class="bg-white" value="0">Не выбрано</option>
+      <select class="w-full pl-4 pr-8 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
+              name="project"
+              v-model="cardModel.project">
+        <option class="bg-white" :value="false">Не выбрано</option>
         <option class="bg-white"
-                value="{{ project.code }}"
+                :value="project.code"
                 v-for="(project, index) in projectList"
-                :selected="project.code === currentProject"
-                :key="index">
+                :key="`project_${index}`">
           {{ project.name }}
         </option>
       </select>
@@ -49,14 +76,13 @@ const currentProject = computed(() => cardData?.value?.project)
     </label>
     <!-- @todo прикрутить плагин для кастомизации select -->
     <label v-if="!isModalForm || cardData" class="form--select relative text-xs text-slate-400">Стадия *:<br>
-      <select class="w-full pl-4 pr-8 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded" name="stage"
-              id="stage">
-        <option class="bg-white" value="0">Не выбрано</option>
+      <select class="w-full pl-4 pr-8 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
+              name="stage"
+              v-model="cardModel.stage">
         <option class="bg-white"
-                value="{{ column.code }}"
+                :value="column.code"
                 v-for="(column, index) in columnList"
-                :selected="column.code === columnData"
-                :key="index">
+                :key="`stage_${index}`">
           {{ column.name }}
         </option>
       </select>
@@ -65,12 +91,14 @@ const currentProject = computed(() => cardData?.value?.project)
       </svg>
     </label>
     <label class="text-xs text-slate-400">Балл *:<br>
-      <input class="w-20 form--input px-4 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
-             type="text"
-             pattern="\d+\.\d*"
+      <input class="w-20 form--input pl-4 pr-2 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
+             key="score"
+             name="score"
+             type="number"
+             step="0.1"
              placeholder="0.0"
              required
-             v-model="cardScore">
+             v-model.number="cardModel.score">
     </label>
     <fieldset class="flex justify-center items-center gap-1">
       <button class="px-5 py-2 bg-sky-300 text-white text-sm rounded">{{ submitButtonText }}</button>
@@ -84,7 +112,6 @@ const currentProject = computed(() => cardData?.value?.project)
 </template>
 
 <style scoped>
-
 .form--select select {
   appearance:none;
 }

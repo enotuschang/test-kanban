@@ -9,7 +9,6 @@ import Form from './Form.vue'
 const hideModal = () => {
   cardsStore.setSelectedCard(null)
   columnsStore.setSelectedColumn(null)
-  showModal.value = false
   window.removeEventListener('keyup', pressEsc)
 }
 
@@ -29,18 +28,14 @@ const selectedColumn = computed(() => columnsStore.selectedColumn)
 const formTitle = computed(() => selectedCard.value ? 'Редактирование' : 'Добавление')
 const formDescription = computed(() => columns.value.find(({code}) => code === selectedColumn.value))
 
-const showModal = ref(false)
-
 const selectedProject = ref('')
 
 watch(selectedColumn, (val) => {
   if (val === null) return
-  showModal.value = true
   window.addEventListener('keyup', pressEsc)
 })
 
 watch(selectedProject, (val) => projectsStore.setSelectedProject(val))
-
 </script>
 
 <template>
@@ -122,7 +117,7 @@ watch(selectedProject, (val) => projectsStore.setSelectedProject(val))
       <Column v-for="(column, index) in columns" :data="column" :key="index"/>
     </main>
   </div>
-  <div class="kanban--overlay flex justify-center items-center w-screen h-[100dvh] fixed" v-if="showModal"
+  <div class="kanban--overlay flex justify-center items-center w-screen h-[100dvh] fixed" v-if="selectedColumn"
        @click="hideModal">
     <div class="kanban--modal w-[380px] max-w-full bg-white relative p-8 rounded" @click.stop>
       <h1 class="text-xl text-slate-700 font-bold">{{ formTitle }}</h1>

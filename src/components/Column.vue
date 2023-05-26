@@ -13,10 +13,6 @@ const setTargetColumn = (val: string) => {
   columnsStore.setTargetColumn(val)
 }
 
-const resetTargetColumn = () => {
-  columnsStore.setTargetColumn(null)
-}
-
 const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()

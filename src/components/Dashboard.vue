@@ -28,21 +28,21 @@ const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()
 
-const projects = computed(() => projectsStore.projectList)
-const columns = computed(() => columnsStore.columnList)
-const selectedCard = computed(() => cardsStore.selectedCard)
-const selectedColumn = computed(() => columnsStore.selectedColumn)
-const formTitle = computed(() => selectedCard.value ? 'Редактирование' : 'Добавление')
-const formDescription = computed(() => columns.value.find(({code}) => code === selectedColumn.value))
+const projects: any = computed(() => projectsStore.projectList)
+const columns: any = computed(() => columnsStore.columnList)
+const selectedCard: any = computed(() => cardsStore.selectedCard)
+const selectedColumn: any = computed(() => columnsStore.selectedColumn)
+const formTitle: any = computed(() => selectedCard.value ? 'Редактирование' : 'Добавление')
+const formDescription: any = computed(() => columns.value.find(({code}: any) => code === selectedColumn.value))
 
-const selectedProject = ref('')
+const selectedProject: any = ref('')
 
 watch(selectedColumn, (val) => {
-  if (val === null) return
+  if (!val) return
   window.addEventListener('keyup', pressEsc)
 })
 
-watch(selectedProject, (val) => projectsStore.setSelectedProject(val))
+watch(selectedProject, (val: any) => projectsStore.setSelectedProject(val))
 </script>
 
 <template>
@@ -104,7 +104,7 @@ watch(selectedProject, (val) => projectsStore.setSelectedProject(val))
                   id="project"
                   v-model="selectedProject">
             <option class="bg-white" value="" v-text="'Не выбрано'"/>
-            <option class="bg-white" v-for="(project, index) in projects" :value="project.code" :key="index"
+            <option class="bg-white" v-for="(project, index) in projects" :value="project.code" :key="`projectfilter_${index}`"
                     v-text="project.name"/>
           </select>
           <svg class="w-4 h-4 absolute right-2 fill-slate-500">

@@ -57,7 +57,7 @@ const draggableCardElementRect = computed(() => draggableCardElement.value.getBo
 const oldMouse: any = ref({x: 0, y: 0})
 
 const card = computed(() => cardsStore.getCardById(id.value))
-const projectName = computed(() => projectsStore.getProjectByCode(card.value.project))
+const projectName: any = computed(() => projectsStore.getProjectByCode(card.value.project))
 </script>
 
 <template>

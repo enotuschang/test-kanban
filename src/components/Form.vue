@@ -28,10 +28,11 @@ const saveCard = (evt: any) => {
   // console.log(JSON.parse(JSON.stringify(Object.fromEntries(data.entries()))))
 
   if (!isModalForm.value) {
-    const router = useRouter()
     router.push({name: 'dashboard'})
   }
 }
+
+const router = useRouter()
 
 const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
@@ -107,6 +108,7 @@ const submitButtonText = cardData.value ? 'Сохранить' : 'Добавит
              name="score"
              type="number"
              step="0.1"
+             min="0"
              placeholder="0.0"
              required
              v-model.number="cardModel.score">

@@ -14,8 +14,8 @@ export const useCardsStore = defineStore('cardsStore', () => {
   const updateCard = (card: any) => {
     cardList.value.set(card.id, card)
   }
-
   const getCardList = (stage: string) => [...cardList.value.values()].filter((elem: any) => elem.stage === stage)
+  const getCardById = (id: number) => cardList.value.get(id)
   const getLastId = computed(() => {
     cardList.value
     const list: any = [...cardList.value.keys()].sort((prev: any, next: any) => prev.id - next.id)
@@ -24,5 +24,5 @@ export const useCardsStore = defineStore('cardsStore', () => {
   const cardList = ref(new Map())
   const selectedCard = ref(null)
 
-  return {cardList, selectedCard, setCardList, setSelectedCard, getCardList, getLastId, updateCard, delCardById}
+  return {cardList, selectedCard, setCardList, setSelectedCard, getCardList, getCardById, getLastId, updateCard, delCardById}
 })

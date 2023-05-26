@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref, computed} from 'vue'
+import {useRouter} from 'vue-router';
 import {useProjectsStore} from '../stores/projectsStore'
 import {useColumnsStore} from '../stores/columnsStore'
 import {useCardsStore} from '../stores/cardsStore'
@@ -8,6 +9,11 @@ const saveCard = (evt: any) => {
   const form = evt.currentTarget
   if (!form) return
   const data = new FormData(form)
+
+  if(!cardModel.value.id)
+    cardModel.value.id = cardsStore.getLastId + 1
+  if(!cardModel.value.stage)
+    cardModel.value.stage = columnList.value[0].code
 
   Object.entries(cardModel.value).forEach(([key, val]) => {
     if (![...data.keys()].some(item => item === key))
@@ -20,6 +26,11 @@ const saveCard = (evt: any) => {
 
   // @todo Тут должен вызываться fetch с отправкой данных на API
   // console.log(JSON.parse(JSON.stringify(Object.fromEntries(data.entries()))))
+
+  if (!isModalForm.value) {
+    const router = useRouter()
+    router.push({name: 'dashboard'})
+  }
 }
 
 const projectsStore = useProjectsStore()
@@ -31,18 +42,18 @@ const columnData = ref(props.columnData)
 const cardData = ref(props.cardData)
 const isModalForm = ref(props.isModalForm)
 
+const projectList: any = computed(() => projectsStore.projectList)
+const columnList: any = computed(() => columnsStore.columnList)
+
 const cardModel = ref({
-  id: cardData?.value?.id || cardsStore.getLastId + 1,
+  id: cardData?.value?.id || false,
   title: cardData?.value?.title || '',
   project: cardData?.value?.project || false,
-  stage: cardData?.value?.stage || columnData.value,
+  stage: cardData?.value?.stage || columnData.value || false,
   score: cardData?.value?.score || 0
 })
 
 const submitButtonText = cardData.value ? 'Сохранить' : 'Добавить'
-
-const projectList = computed(() => projectsStore.getProjectList)
-const columnList = computed(() => columnsStore.getColumnList)
 </script>
 
 <template>
@@ -78,6 +89,7 @@ const columnList = computed(() => columnsStore.getColumnList)
       <select class="w-full pl-4 pr-8 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
               name="stage"
               v-model="cardModel.stage">
+        <option class="bg-white" :value="false">Не выбрано</option>
         <option class="bg-white"
                 :value="column.code"
                 v-for="(column, index) in columnList"

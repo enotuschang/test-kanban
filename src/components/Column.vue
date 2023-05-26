@@ -26,7 +26,6 @@ const cardList = computed(() => {
     list.value = list.value.filter(({project}) => project === selectedProject.value)
   if (isSorted.value !== 0)
     list.value.sort((prev: any, next: any) => (prev.score - next.score) * isSorted.value)
-  console.log(list.value)
   return list.value
 })
 </script>
@@ -49,7 +48,7 @@ const cardList = computed(() => {
       </div>
     </div>
     <div class="kanban--card-list grid gap-2 mt-3 empty:rounded">
-      <Card v-for="card in cardList" :data="card" :key="`card_${card.id}`"/>
+      <Card v-for="card in cardList" :id="card.id" :key="`card_${card.id}`"/>
     </div>
     <button class="w-full mt-3 px-5 py-2 text-sm text-slate-500" type="button" @click="addCard(columnData.code)">
       Добавить

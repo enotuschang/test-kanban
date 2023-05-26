@@ -1,4 +1,4 @@
-import {ref, computed} from 'vue'
+import {ref} from 'vue'
 import {defineStore} from 'pinia'
 
 export const useColumnsStore = defineStore('columnsStore', () => {
@@ -11,7 +11,6 @@ export const useColumnsStore = defineStore('columnsStore', () => {
   const getColumnByCode = (val: string) => columnList.value.find(({code}) => code === val)
   const columnList = ref([])
   const selectedColumn = ref(null)
-  const getColumnList = computed(() => columnList.value)
 
-  return {columnList, selectedColumn, getColumnList, getColumnByCode, setColumnList, setSelectedColumn}
+  return {columnList, selectedColumn, getColumnByCode, setColumnList, setSelectedColumn}
 })

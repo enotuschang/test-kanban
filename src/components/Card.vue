@@ -13,10 +13,10 @@ const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()
 
-const props = defineProps(['data'])
-const CardData = ref(props.data)
+const props = defineProps(['id'])
+const id = ref(props.id)
 
-const card = computed(() => CardData.value)
+const card = computed(() => cardsStore.getCardById(id.value))
 const projectName = computed(() => projectsStore.getProjectByCode(card.value.project))
 </script>
 

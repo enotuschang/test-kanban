@@ -5,9 +5,13 @@ export const useProjectsStore = defineStore('projectsStore', () => {
   const setProjectList = (val: any) => {
     projectList.value = val
   }
+  const setSelectedProject = (val: string) => {
+    selectedProject.value = val
+  }
   const getProjectByCode = (code: string) => projectList.value.find((elem: any) => elem.code === code)
   const projectList = ref([])
+  const selectedProject = ref('')
   const getProjectList = computed(() => projectList.value)
 
-  return {projectList, getProjectList, setProjectList, getProjectByCode}
+  return {projectList, selectedProject, getProjectList, setProjectList, setSelectedProject, getProjectByCode}
 })

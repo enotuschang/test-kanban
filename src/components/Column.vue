@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import {ref, computed} from 'vue'
-import {useCardsStore} from '../stores/cardsStore'
+import {useProjectsStore} from '../stores/projectsStore'
 import {useColumnsStore} from '../stores/columnsStore'
+import {useCardsStore} from '../stores/cardsStore'
 import Card from './Card.vue'
 
 const addCard = (code: string) => {
   columnsStore.setSelectedColumn(code)
 }
 
+const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()
 
@@ -16,13 +18,16 @@ const columnData = ref(props.data)
 
 const isSorted = ref(0)
 
+const selectedProject = computed(() => projectsStore.selectedProject)
+
 const cardList = computed(() => {
   const list = ref(cardsStore.getCardList(columnData.value.code))
+  if(selectedProject.value)
+    list.value = list.value.filter(({project}) => project === selectedProject.value)
   if(isSorted.value !== 0)
     list.value.sort((prev: any, next: any) => (prev.score - next.score) * isSorted.value)
   return list.value
 })
-
 </script>
 
 <template>

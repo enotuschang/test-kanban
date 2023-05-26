@@ -17,6 +17,13 @@ const pressEsc = (evt: any) => {
   hideModal()
 }
 
+const saveToLocalStorage = () => {
+  const cardList = computed(() => cardsStore.cardList)
+  const data = JSON.stringify([...cardList.value.values()])
+  localStorage.setItem('kanban', data)
+  alert('Изменения сохранены в localStorage')
+}
+
 const projectsStore = useProjectsStore()
 const columnsStore = useColumnsStore()
 const cardsStore = useCardsStore()
@@ -108,7 +115,9 @@ watch(selectedProject, (val) => projectsStore.setSelectedProject(val))
             class="grow md:grow-0 px-5 py-2 bg-sky-300 text-white text-sm rounded"
             to="/add-card"
             v-text="'Добавить карточку'"/>
-        <button class="grow md:grow-0 px-5 py-2 bg-sky-300 text-white text-sm rounded" type="button">Сохранить
+        <button class="grow md:grow-0 px-5 py-2 bg-sky-300 text-white text-sm rounded"
+                type="button"
+                @click="saveToLocalStorage">Сохранить
           изменения
         </button>
       </div>

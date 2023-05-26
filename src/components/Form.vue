@@ -24,7 +24,10 @@ const currentProject = computed(() => cardData?.value?.project)
 <template>
   <form class="grid gap-5 mt-5" action="">
     <label class="text-xs text-slate-400">Заголовок *:<br>
-      <input class="form--input w-full px-4 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded" type="text"
+      <input class="form--input w-full px-4 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
+             maxlength="70"
+             type="text"
+             required
              v-model="cardName">
     </label>
     <!-- @todo прикрутить плагин для кастомизации select -->
@@ -62,7 +65,11 @@ const currentProject = computed(() => cardData?.value?.project)
       </svg>
     </label>
     <label class="text-xs text-slate-400">Балл *:<br>
-      <input class="w-20 form--input px-4 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded" type="text"
+      <input class="w-20 form--input px-4 py-2 mt-1 text-sm text-slate-700 bg-slate-200 rounded"
+             type="text"
+             pattern="\d+\.\d*"
+             placeholder="0.0"
+             required
              v-model="cardScore">
     </label>
     <fieldset class="flex justify-center items-center gap-1">
